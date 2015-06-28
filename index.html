@@ -18,6 +18,7 @@
 
       <form name="settingsForm">
         <md-subheader class="md-primary">Kodi Hosts {{ test }}</md-subheader>
+          <p>{{ test.hosts }}</p>
           <md-card ng-repeat="host in hosts track by $index">
             <md-card-content layout-padding="" layout="row" layout-sm="column">
               <md-input-container>
