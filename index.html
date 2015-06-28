@@ -58,9 +58,9 @@
         
         $scope.params = $location.hash();
         
-        $scope.test1 = encodeURIComponent($location.hash());
+        $scope.test1 = decodeURIComponent($location.hash());
         
-        $scope.test2 = JSON.parse($scope.test1);
+        $scope.test2 = ''; //JSON.parse($scope.test1);
 
         $scope.save = function() {
           location.href = 'pebblejs://close#' + encodeURIComponent(JSON.stringify($scope.hosts));
