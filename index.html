@@ -17,10 +17,8 @@
       </md-toolbar>
 
       <form name="settingsForm">
-        <md-subheader class="md-primary">Kodi Hosts - {{ url }}</md-subheader>
+        <md-subheader class="md-primary">Kodi Hosts</md-subheader>
           <p>params: {{ params }}</p>
-          <p>test1: {{ test1 }}</p>
-          <p>test2: {{ test2 }}</p>
 
           <md-card ng-repeat="host in hosts track by $index">
             <md-card-content layout-padding="" layout="row" layout-sm="column">
@@ -59,16 +57,10 @@
       .controller('SettingsController', function($scope, $location) {
         $scope.hosts = new Array(1);
 
-        $scope.url = $location.absUrl();
-
         $scope.params = $location.hash();
 
-        $scope.test1 = decodeURIComponent($location.hash());
-
-        $scope.test2 = JSON.parse($scope.test1);
-
         $scope.save = function() {
-          location.href = 'pebblejs://close#' + encodeURIComponent(JSON.stringify($scope.hosts));
+          location.href = 'pebblejs://close#' + encodeURIComponent(JSON.stringify({ hosts: $scope.hosts }));
         }
 
         $scope.remove = function(index) {
