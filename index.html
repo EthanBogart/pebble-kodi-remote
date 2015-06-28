@@ -18,8 +18,6 @@
 
       <form name="settingsForm">
         <md-subheader class="md-primary">Kodi Hosts</md-subheader>
-          <p>params: {{ params }}</p>
-
           <md-card ng-repeat="host in hosts track by $index">
             <md-card-content layout-padding="" layout="row" layout-sm="column">
               <md-input-container>
@@ -55,9 +53,9 @@
         $locationProvider.html5Mode(true);
       })
       .controller('SettingsController', function($scope, $location) {
-        $scope.hosts = new Array(1);
+        var params = $location.hash();
 
-        $scope.params = $location.hash();
+        $scope.hosts = params && params.hosts ? params.hosts : new Array(1);
 
         $scope.save = function() {
           location.href = 'pebblejs://close#' + encodeURIComponent(JSON.stringify({ hosts: $scope.hosts }));
