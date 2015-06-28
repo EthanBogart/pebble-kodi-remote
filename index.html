@@ -17,7 +17,7 @@
       </md-toolbar>
 
       <form name="settingsForm">
-        <md-subheader class="md-primary">Kodi Hosts</md-subheader>
+        <md-subheader class="md-primary">Kodi Hosts {{ params.hosts }}</md-subheader>
           <md-card ng-repeat="host in hosts track by $index">
             <md-card-content layout-padding="" layout="row" layout-sm="column">
               <md-input-container>
@@ -54,6 +54,7 @@
       })
       .controller('SettingsController', function($scope, $location) {
         var params = $location.hash();
+        $scope.test = params;
 
         $scope.hosts = params && params.hosts ? params.hosts : new Array(1);
 
