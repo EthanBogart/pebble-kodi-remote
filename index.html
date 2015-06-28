@@ -48,8 +48,10 @@
     <script>
     angular
       .module('KodiRemoteApp', ['ngMaterial'])
-      .controller('SettingsController', function($scope) {
+      .controller('SettingsController', function($scope, $location) {
         $scope.hosts = new Array(1);
+
+        console.log($location.absUrl());
 
         $scope.save = function() {
           location.href = 'pebblejs://close#' + encodeURIComponent(JSON.stringify($scope.hosts));
