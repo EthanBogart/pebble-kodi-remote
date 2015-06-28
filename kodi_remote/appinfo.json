@@ -1,7 +1,7 @@
 {
     "appKeys": {},
     "capabilities": [
-        ""
+        "configurable"
     ],
     "companyName": "jamarzka@gmail.com",
     "longName": "Kodi Remote",
