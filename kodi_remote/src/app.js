@@ -1,12 +1,21 @@
 var UI = require('ui');
 var ajax = require('ajax');
 var Accel = require('ui/accel');
+var Settings = require('settings');
 
 Accel.init();
 
 var host = null;
 var playerId = null;
-var checkInterval = null;
+
+Settings.config(
+  { url: 'http://jamarzka.github.io/pebble-kodi-remote/' },
+  function(e) {
+    if (e.failed) {
+      console.log(e.response);
+    }
+  }
+);
 
 var cmdMenuSections = {
   current: null,
@@ -38,18 +47,33 @@ var cmdMenuSections = {
 var hostMenu = new UI.Menu({
   sections: [{
     title: 'Hosts',
-    items: [
-      { title: 'Downstairs', ip: '10.1.1.116' },
-      { title: 'Upstairs', ip: '10.1.1.115' }
-    ]
+    items: []
   }]
 });
 
 var cmdMenu = new UI.Menu();
 
-hostMenu.show();
+var hosts = Settings.option('hosts');
 
-checkInterval = setInterval(showCmdMenu, 1000);
+if(hosts && hosts.length > 0) {
+  for(var i = 0; i < hosts.length; i++) {
+    if(hosts[i]) {
+      hostMenu.item(0, i, { title: hosts[i].name, ip: hosts[i].ip });
+    }
+  }
+
+  hostMenu.show();
+  
+  setInterval(showCmdMenu, 1000);
+}
+else {
+  var errorCard = new UI.Card({
+    title:'Error',
+    body: 'This app needs to be configured from your phone.'
+  });
+
+  errorCard.show();
+}
 
 hostMenu.on('select', function(e) {
   host = e.item;
@@ -60,7 +84,6 @@ hostMenu.on('select', function(e) {
 function showCmdMenu() {
   if(host) {
     send(host, { name: 'GetActivePlayers', cmd: 'Player.GetActivePlayers' }, function(data, status, request) {
-      
       var current = cmdMenuSections.current;
       
       if(data.result.length > 0) {
@@ -75,6 +98,7 @@ function showCmdMenu() {
       if(current !== cmdMenuSections.current) {
         cmdMenu._selection = { sectionIndex: 0, itemIndex: 0 };
         cmdMenu.section(0, cmdMenuSections[cmdMenuSections.current]);
+        cmdMenu.section(0).title = host.name;
         cmdMenu.show();
       }
     });
@@ -128,4 +152,3 @@ function send(host, cmd, success) {
     }
   );
 }
-
